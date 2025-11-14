@@ -6,16 +6,20 @@ import {
 import { isAxiosError } from "axios";
 import { toast } from "@/components/ui/toast";
 import { logoutService } from "@/services/auth";
+import { useNavigate } from "@tanstack/react-router";
 
 export const useLogout = (options?: UseMutationOptions<void, Error, void>) => {
 	const queryClient = useQueryClient();
-
+	const navigate = useNavigate()
 	return useMutation<void, Error, void>({
 		mutationFn: async () => {
 			try {
 				await logoutService();
 				queryClient.invalidateQueries({ queryKey: ["user"] });
-				window.location.href = "/login";
+				navigate({
+					to: '/login',
+					replace: true
+				})
 			} catch (error) {
 				if (isAxiosError(error)) {
 					console.error(error.message);
