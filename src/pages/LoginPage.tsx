@@ -36,7 +36,7 @@ export const LoginPage = () => {
 						pauseDuration={2000}
 						showCursor={true}
 						cursorCharacter="|"
-						className="text-4xl font-bold bg-secondary md:bg-linear-to-r from-blue-900 to-[#1d2537] text-transparent bg-clip-text mb-6"
+						className="text-4xl font-bold bg-linear-to-r from-gray-400 to-slate-100  md:bg-linear-to-r md:from-blue-900 md:to-[#1d2537] text-transparent bg-clip-text mb-6"
 						variableSpeed={{ min: 20, max: 120 }}
 					/>
 					<LoginForm />

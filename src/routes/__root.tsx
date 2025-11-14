@@ -19,15 +19,11 @@ interface MyRouterContext {
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
 	beforeLoad: async ({ location }) => {
-		if (location.pathname === "/login") {
-			return;
-		}
-
-		// Check if user is authenticated
+		if (location.pathname === "/login") return;
 		try {
 			await sessionService();
 		} catch {
-			throw redirect({ to: "/login" });
+			throw redirect({ to: "/login", search: { expired: "true" } });
 		}
 	},
 	component: () => (
