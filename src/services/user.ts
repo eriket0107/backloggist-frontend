@@ -3,7 +3,7 @@ import type { RegistrationVariables } from "@/types/common"
 import type { User } from "@/types/entities"
 import { errorHandler } from "@/utils/error-handler"
 
-const create = async (credentials: RegistrationVariables): Promise<Omit<User, "password">> => {
+const signUp = async (credentials: RegistrationVariables): Promise<Omit<User, "password">> => {
   try {
     const result = await api.post('/users', credentials)
     return result.data.data
@@ -13,5 +13,5 @@ const create = async (credentials: RegistrationVariables): Promise<Omit<User, "p
 }
 
 export const userService = {
-  create
+  signUp
 }

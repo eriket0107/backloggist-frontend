@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/toast";
-import { useLogout } from "@/hooks/useLogout";
+import { useSignOut } from "@/hooks/useSignOut";
 
 export const DashboardPage = () => {
-  const { mutate } = useLogout({
+  const { mutate } = useSignOut({
     onSuccess: () => {
-      toast.success("Logout efetuado com sucesso!");
+      toast.success("Até logo! Sua sessão foi encerrada.");
     },
   });
 

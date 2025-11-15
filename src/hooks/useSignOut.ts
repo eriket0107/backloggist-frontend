@@ -6,22 +6,21 @@ import {
 import { isAxiosError } from "axios";
 import { toast } from "@/components/ui/toast";
 import { authService } from "@/services/auth";
-import type { Session } from "@/types/entities";
-import type { LoginVariables } from "@/types/common";
+import { useNavigate } from "@tanstack/react-router";
 
-export const useLogin = (
-	options?: UseMutationOptions<Session, Error, LoginVariables>,
-) => {
+export const useSignOut = (options?: UseMutationOptions<void, Error, void>) => {
 	const queryClient = useQueryClient();
+	const navigate = useNavigate()
 
-	return useMutation<Session, Error, LoginVariables>({
-		mutationFn: async ({ email, password }) => {
-			queryClient.invalidateQueries({ queryKey: ["user"] });
+	return useMutation<void, Error, void>({
+		mutationFn: async () => {
 			try {
-				await authService.login({ email, password });
-				const session = await authService.session();
-
-				return session;
+				await authService.signOut();
+				queryClient.invalidateQueries({ queryKey: ["user"] });
+				navigate({
+					to: '/auth/sign-in',
+					replace: true
+				})
 			} catch (error) {
 				if (isAxiosError(error)) {
 					console.error(error.message);

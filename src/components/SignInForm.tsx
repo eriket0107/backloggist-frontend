@@ -5,7 +5,7 @@ import { useId, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { toast } from "@/components/ui/toast";
-import { useLogin } from "@/hooks/useLogin";
+import { useLogin } from "@/hooks/useSignIn";
 import { cn } from "@/utils";
 import { Button } from "./ui/button";
 import {
@@ -26,7 +26,7 @@ const loginSchema = z.object({
 
 type LoginFormData = z.infer<typeof loginSchema>;
 
-export const LoginForm = () => {
+export const SignInForm = () => {
   const [isToSeePassword, setIsToSeePassword] = useState(false);
   const emailId = useId();
   const passwordId = useId();
@@ -115,7 +115,7 @@ export const LoginForm = () => {
           </Button>
         </form>
         <div className="w-full flex items-center justify-center">
-          <NavigateButton to={"/auth/sign-in"} iconEnd={ArrowRight}>
+          <NavigateButton to={"/auth/sign-up"} iconEnd={ArrowRight}>
             Criar conta
           </NavigateButton>
         </div>

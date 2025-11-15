@@ -14,7 +14,7 @@ interface MyRouterContext {
   queryClient: QueryClient;
 }
 
-const PUBLIC_ROUTES = ["/auth/login", "/auth/sign-in"] as const;
+const PUBLIC_ROUTES = ["/auth/sign-up", "/auth/sign-in"] as const;
 
 const isPublicRoute = (pathname: string): boolean => {
   return PUBLIC_ROUTES.some((route) => pathname === route);
@@ -28,7 +28,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
       await authService.session();
     } catch {
       throw redirect({
-        to: "/auth/login",
+        to: "/auth/sign-in",
         search: {
           expired: true,
         },

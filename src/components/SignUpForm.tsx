@@ -16,7 +16,7 @@ import {
 } from "./ui/card";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
-import { useCreateUser } from "@/hooks/useCreateUser";
+import { useSignUp } from "@/hooks/useSignUp";
 import { NavigateButton } from "./NavigateButton";
 
 const signInErrors = {
@@ -51,7 +51,7 @@ const signSchema = z
   });
 type SignInFormData = z.infer<typeof signSchema>;
 
-export const SignInForm = () => {
+export const SignUpForm = () => {
   const [isToSeePassword, setIsToSeePassword] = useState(false);
   const nameId = useId();
   const emailId = useId();
@@ -72,10 +72,10 @@ export const SignInForm = () => {
     },
   });
 
-  const { mutate, isPending } = useCreateUser({
+  const { mutate, isPending } = useSignUp({
     onSuccess: () => {
       toast.success("Usuário criado com sucesso.");
-      navigate({ to: "/auth/login" });
+      navigate({ to: "/auth/sign-in" });
     },
     onError: (data) => {
       toast.error(
@@ -190,7 +190,7 @@ export const SignInForm = () => {
         </form>
 
         <div className="w-full flex items-center justify-center">
-          <NavigateButton to={"/auth/login"} iconStart={ArrowLeft}>
+          <NavigateButton to={"/auth/sign-in"} iconStart={ArrowLeft}>
             Voltar para login
           </NavigateButton>
         </div>

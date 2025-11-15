@@ -3,7 +3,7 @@ import type { LoginVariables } from "@/types/common";
 import type { Session } from "@/types/entities";
 import { errorHandler } from "@/utils/error-handler";
 
-const logout = async () => {
+const signOut = async () => {
 	try {
 		const result = await api.post("/auth/logout");
 
@@ -13,7 +13,7 @@ const logout = async () => {
 	}
 };
 
-const login = async ({
+const signIn = async ({
 	email,
 	password,
 }: LoginVariables): Promise<string> => {
@@ -41,7 +41,7 @@ const session = async () => {
 
 
 export const authService = {
-	login,
-	logout,
+	signIn,
+	signOut,
 	session
 }
