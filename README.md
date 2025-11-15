@@ -8,7 +8,7 @@ Este é o repositório do frontend do **Backloggist**, uma aplicação dedicada 
     align-items: center;   
     width: 100%;      
 ">
-<img width="512" height="512" alt="logo512" src="https://github.com/user-attachments/assets/b5709036-1a8d-441d-8644-8fcf89e7d246" />
+<img style="margin: auto;" width="512" height="512" alt="logo512" src="https://github.com/user-attachments/assets/b5709036-1a8d-441d-8644-8fcf89e7d246" />
 </div>
 
 O foco deste MVP é fornecer uma interface limpa e eficiente para gerenciar o backlog individual.
