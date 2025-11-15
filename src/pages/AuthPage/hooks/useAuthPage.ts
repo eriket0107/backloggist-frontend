@@ -13,7 +13,7 @@ export const useAuthPage = () => {
       hasShownToast.current = true;
 
       navigate({
-        to: "/auth/login",
+        to: "/auth/sign-in",
         replace: true,
       });
     }

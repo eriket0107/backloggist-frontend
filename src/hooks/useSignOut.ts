@@ -6,21 +6,17 @@ import {
 import { isAxiosError } from "axios";
 import { toast } from "@/components/ui/toast";
 import { authService } from "@/services/auth";
-import { useNavigate } from "@tanstack/react-router";
+
 
 export const useSignOut = (options?: UseMutationOptions<void, Error, void>) => {
 	const queryClient = useQueryClient();
-	const navigate = useNavigate()
+
 
 	return useMutation<void, Error, void>({
 		mutationFn: async () => {
 			try {
 				await authService.signOut();
 				queryClient.invalidateQueries({ queryKey: ["user"] });
-				navigate({
-					to: '/auth/sign-in',
-					replace: true
-				})
 			} catch (error) {
 				if (isAxiosError(error)) {
 					console.error(error.message);

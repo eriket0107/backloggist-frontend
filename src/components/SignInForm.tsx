@@ -18,6 +18,7 @@ import {
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { NavigateButton } from "./NavigateButton";
+import { Elipses } from "./Elipsis";
 
 const loginSchema = z.object({
   email: z.string().email("E-mail inválido."),
@@ -111,7 +112,7 @@ export const SignInForm = () => {
             className="w-full bg-gray-900 py-4! hover:bg-blue-950 transition-all duration-200 cursor-pointer"
             disabled={isPending}
           >
-            {isPending ? "Logging in..." : "Login"}
+            {isPending ? <Elipses>Entrando</Elipses> : "Entrar"}
           </Button>
         </form>
         <div className="w-full flex items-center justify-center">

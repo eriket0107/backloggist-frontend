@@ -18,6 +18,7 @@ import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { useSignUp } from "@/hooks/useSignUp";
 import { NavigateButton } from "./NavigateButton";
+import { Elipses } from "./Elipsis";
 
 const signInErrors = {
   "This email address is already in use.": "Este e-mail já está em uso.",
@@ -185,7 +186,7 @@ export const SignUpForm = () => {
             className="w-full bg-gray-900 py-4! hover:bg-blue-950 transition-all duration-200 cursor-pointer"
             disabled={isPending}
           >
-            {isPending ? "Criando..." : "Criar conta"}
+            {isPending ? <Elipses>Criando</Elipses> : "Criar conta"}
           </Button>
         </form>
 
