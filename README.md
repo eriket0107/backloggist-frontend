@@ -14,17 +14,15 @@ O frontend foi construído utilizando o seguinte conjunto de tecnologias:
 
 | Categoria | Tecnologia |
 | :--- | :--- |
-| **Framework** | **React** |
-| **Linguagem** | **TypeScript (TS)** |
-| **Estilização** | **Tailwind CSS** |
-| **Roteamento** | **TanStack Router** |
+| **Núcleo & Tipagem** | **React & TypeScript (TS)** |
 | **Gerenciamento de Dados** | **TanStack Query** |
-| **Estado Local/UI** | **Zustand** |
-| **Parâmetros URL** | **Nuqs** |
-| *Animações* | *Framer Motion* |
----
-
-**Gostaria de simplificar ou revisar alguma outra seção do README?**
+| **Roteamento & Navegação** | **TanStack Router** |
+| **Estilização & UI** | **Tailwind CSS** |
+| **Animações & UX** | **Framer Motion** |
+| **Formulários** | **React Hook Form & Zod** |
+| **UI Global & Ferramentas** | **Zustand** |
+| **UX & Usabilidade** | **Nuqs** |
+| **Qualidade de Código** | **Biome** |
 
 ## 🌟 Funcionalidades Principais (MVP)
 
