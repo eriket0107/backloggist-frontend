@@ -73,7 +73,7 @@ O frontend implementa as seguintes capacidades, refletindo os endpoints do backe
     Crie um arquivo `.env` na raiz e configure o URL base do seu backend:
     ```
     # .env
-    VITE_API_URL=http://localhost:3333
+    VITE_BASE_URL=http://localhost:3333
     ```
 4.  **Inicie a Aplicação:**
     ```bash
