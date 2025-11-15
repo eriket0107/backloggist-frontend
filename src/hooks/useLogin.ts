@@ -5,13 +5,9 @@ import {
 } from "@tanstack/react-query";
 import { isAxiosError } from "axios";
 import { toast } from "@/components/ui/toast";
-import { loginService, sessionService } from "@/services/auth";
+import { authService } from "@/services/auth";
 import type { Session } from "@/types/entities";
-
-interface LoginVariables {
-	email: string;
-	password: string;
-}
+import type { LoginVariables } from "@/types/common";
 
 export const useLogin = (
 	options?: UseMutationOptions<Session, Error, LoginVariables>,
@@ -22,8 +18,8 @@ export const useLogin = (
 		mutationFn: async ({ email, password }) => {
 			queryClient.invalidateQueries({ queryKey: ["user"] });
 			try {
-				await loginService({ email, password });
-				const session = await sessionService();
+				await authService.login({ email, password });
+				const session = await authService.session();
 
 				return session;
 			} catch (error) {

@@ -1,12 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
-import { LoginPage } from "@/pages/LoginPage";
+import { LoginForm } from "@/components/LoginForm";
 
 const loginSearchSchema = z.object({
   expired: z.boolean().optional(),
 });
 
-export const Route = createFileRoute("/login")({
-  component: LoginPage,
+export const Route = createFileRoute("/auth/login")({
   validateSearch: loginSearchSchema,
+  component: LoginForm,
 });

@@ -1,51 +1,47 @@
-import { AxiosError, type AxiosResponse } from "axios";
 import { api } from "@/api";
+import type { LoginVariables } from "@/types/common";
 import type { Session } from "@/types/entities";
+import { errorHandler } from "@/utils/error-handler";
 
-export const logoutService = async () => {
+const logout = async () => {
 	try {
 		const result = await api.post("/auth/logout");
 
 		return result.data;
 	} catch (error) {
-		if (error instanceof AxiosError) {
-			throw new Error(error.message);
-		}
-		throw error;
+		throw errorHandler(error);
 	}
 };
 
-export const loginService = async ({
+const login = async ({
 	email,
 	password,
-}: {
-	email: string;
-	password: string;
-}): Promise<AxiosResponse> => {
+}: LoginVariables): Promise<string> => {
 	try {
-		const result = await api.post<Promise<string>>("/auth/login", {
+		const result = await api.post<string>("/auth/login", {
 			email,
 			password,
 		});
 
-		return result;
+		return result.data;
 	} catch (error) {
-		if (error instanceof AxiosError) {
-			throw new Error(error.message);
-		}
-		throw error;
+		throw errorHandler(error);
 	}
 };
 
-export const sessionService = async () => {
+const session = async () => {
 	try {
-		const result = await api.get<Promise<Session>>("/auth/profile");
+		const result = await api.get<Session>("/auth/profile");
 
 		return result.data;
 	} catch (error) {
-		if (error instanceof AxiosError) {
-			throw new Error(error.message);
-		}
-		throw error;
+		throw errorHandler(error);
 	}
 };
+
+
+export const authService = {
+	login,
+	logout,
+	session
+}

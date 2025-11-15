@@ -1,8 +1,11 @@
+import type { Role } from "./roles";
+
 export interface User {
 	id: string;
 	name: string;
 	email: string;
 	password: string;
+	roles: Role[]
 	createdAt: Date;
 	updatedAt: Date;
 }

@@ -4,7 +4,7 @@ import {
 	useQueryClient,
 } from "@tanstack/react-query";
 import { isAxiosError } from "axios";
-import { sessionService } from "@/services/auth";
+import { authService } from "@/services/auth";
 import type { Session } from "@/types/entities";
 
 export const useSession = (
@@ -15,7 +15,7 @@ export const useSession = (
 		queryKey: ["session"],
 		queryFn: async () => {
 			try {
-				const session = await sessionService();
+				const session = await authService.session();
 				return session;
 			} catch (error) {
 				if (isAxiosError(error) && error.response?.status === 401) {
