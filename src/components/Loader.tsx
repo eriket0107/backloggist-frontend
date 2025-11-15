@@ -1,4 +1,4 @@
-import LogoMini from "/logo192 1.webp";
+import LogoMini from "/backloggist-logo-bg-text-192.webp";
 
 export const Loader = () => {
   return (
@@ -16,18 +16,6 @@ export const Loader = () => {
           <div className="absolute w-[75px] h-[75px] rounded-full border-2 border-blue-500/20 animate-[ping_1.5s_ease-in-out_1.5s_infinite]" />
         </div>
       </div>
-      {/* <p className="mt-4">
-				Carregando
-				<span className="inline-block animate-[bounce_1.5s_ease-in-out_infinite]">
-					.
-				</span>
-				<span className="inline-block animate-[bounce_1.5s_ease-in-out_0.2s_infinite]">
-					.
-				</span>
-				<span className="inline-block animate-[bounce_1.5s_ease-in-out_0.4s_infinite]">
-					.
-				</span>
-			</p> */}
     </div>
   );
 };

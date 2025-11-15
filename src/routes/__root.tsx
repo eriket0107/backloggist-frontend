@@ -7,14 +7,14 @@ import {
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 
 import type { QueryClient } from "@tanstack/react-query";
-import { sessionService } from "@/services/auth";
+import { authService } from "@/services/auth";
 import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
 
 interface MyRouterContext {
   queryClient: QueryClient;
 }
 
-const PUBLIC_ROUTES = ["/login"] as const;
+const PUBLIC_ROUTES = ["/auth/sign-up", "/auth/sign-in"] as const;
 
 const isPublicRoute = (pathname: string): boolean => {
   return PUBLIC_ROUTES.some((route) => pathname === route);
@@ -25,10 +25,10 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
     if (isPublicRoute(location.pathname)) return;
 
     try {
-      await sessionService();
+      await authService.session();
     } catch {
       throw redirect({
-        to: "/login",
+        to: "/auth/sign-in",
         search: {
           expired: true,
         },

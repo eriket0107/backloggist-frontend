@@ -5,21 +5,18 @@ import {
 } from "@tanstack/react-query";
 import { isAxiosError } from "axios";
 import { toast } from "@/components/ui/toast";
-import { logoutService } from "@/services/auth";
-import { useNavigate } from "@tanstack/react-router";
+import { authService } from "@/services/auth";
 
-export const useLogout = (options?: UseMutationOptions<void, Error, void>) => {
+
+export const useSignOut = (options?: UseMutationOptions<void, Error, void>) => {
 	const queryClient = useQueryClient();
-	const navigate = useNavigate()
+
+
 	return useMutation<void, Error, void>({
 		mutationFn: async () => {
 			try {
-				await logoutService();
+				await authService.signOut();
 				queryClient.invalidateQueries({ queryKey: ["user"] });
-				navigate({
-					to: '/login',
-					replace: true
-				})
 			} catch (error) {
 				if (isAxiosError(error)) {
 					console.error(error.message);

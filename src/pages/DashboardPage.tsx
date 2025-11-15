@@ -1,13 +1,23 @@
+import { Elipses } from "@/components/Elipsis";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/toast";
-import { useLogout } from "@/hooks/useLogout";
+import { useSession } from "@/hooks/useSession";
+import { useSignOut } from "@/hooks/useSignOut";
+import { useNavigate } from "@tanstack/react-router";
 
 export const DashboardPage = () => {
-  const { mutate } = useLogout({
+  const navigate = useNavigate();
+  const { mutate } = useSignOut({
     onSuccess: () => {
-      toast.success("Logout efetuado com sucesso!");
+      toast.success("Até logo! Sua sessão foi encerrada.");
+      navigate({
+        to: "/auth/sign-in",
+        replace: true,
+      });
     },
   });
+
+  const { data: session, isLoading } = useSession();
 
   const handleLogout = () => {
     mutate();
@@ -15,8 +25,10 @@ export const DashboardPage = () => {
 
   return (
     <div>
-      Teste
-      <Button onClick={handleLogout}>Logout</Button>
+      Olá,{session?.user.name}!
+      <Button onClick={handleLogout}>
+        {isLoading ? <Elipses>Saindo</Elipses> : "Sair"}
+      </Button>
     </div>
   );
 };
