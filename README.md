@@ -2,7 +2,8 @@
 
 Este é o repositório do frontend do **Backloggist**, uma aplicação dedicada a ajudar usuários a **Organizar, Priorizar e Executar** sua lista de itens de consumo pessoal (jogos, filmes, livros, cursos, etc.).
 
-<img style="margin: auto;" width="512" height="512" alt="logo512" src="https://github.com/user-attachments/assets/b5709036-1a8d-441d-8644-8fcf89e7d246" />
+![backloggist-text-hd](https://github.com/user-attachments/assets/d1f1a749-b0c5-4c94-b0b6-56ca911c5446)
+
 
 O foco deste MVP é fornecer uma interface limpa e eficiente para gerenciar o backlog individual.
 
