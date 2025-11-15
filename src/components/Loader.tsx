@@ -1,4 +1,4 @@
-import LogoMini from "/logo192 1.webp";
+import LogoMini from "/backloggist-logo-bg-text-192.webp";
 
 export const Loader = () => {
   return (
