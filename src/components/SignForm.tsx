@@ -35,7 +35,7 @@ const signSchema = z
     password: z.string().min(8, "Senha precisa ter mais de 8 dígitos."),
     confirmPassword: z.string().min(8, "Senha precisa ter mais de 8 dígitos."),
   })
-  .superRefine(({ password, confirmPassword, name }, ctx) => {
+  .superRefine(({ password, confirmPassword }, ctx) => {
     if (password !== confirmPassword) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
