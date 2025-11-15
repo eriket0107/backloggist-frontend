@@ -2,7 +2,7 @@
 
 Este é o repositório do frontend do **Backloggist**, uma aplicação dedicada a ajudar usuários a **Organizar, Priorizar e Executar** sua lista de itens de consumo pessoal (jogos, filmes, livros, cursos, etc.).
 <div style="
-    padding: 12px;
+    padding: 36px;
     display: flex;
     justify-content: center; 
     align-items: center;   
