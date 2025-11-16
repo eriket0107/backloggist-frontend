@@ -1,14 +1,17 @@
-import type { Session } from "@/types/entities";
+import type { User } from "@/types/entities";
 import { cn } from "@/utils";
+import { memo } from "react";
+import { Image } from "./Image";
 
 interface AvatarProps {
-  session: Session;
+  name: User["name"];
   className?: string;
+  src?: string;
 }
 
-export const Avatar = ({ session, className }: AvatarProps) => {
-  const firstLetter = session?.user.name[0].toUpperCase();
-  const secondLetter = session?.user.name[1].toUpperCase();
+export const Avatar = memo(({ name, className, src }: AvatarProps) => {
+  const firstLetter = name[0].toUpperCase();
+  const secondLetter = name[1].toUpperCase();
 
   return (
     <span
@@ -17,10 +20,14 @@ export const Avatar = ({ session, className }: AvatarProps) => {
         className
       )}
     >
-      <p className="text-gray-50 text-xs">
-        {firstLetter}
-        {secondLetter}
-      </p>
+      {src ? (
+        <Image src={src} alt={`Imagem de perfil de ${name} `} />
+      ) : (
+        <p className="text-gray-50 text-xs">
+          {firstLetter}
+          {secondLetter}
+        </p>
+      )}
     </span>
   );
-};
+});
