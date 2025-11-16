@@ -16,7 +16,7 @@ export const errorHandler = (error: unknown): never => {
 
     const { response } = error;
 
-    if (response.status === 401) {
+    if (response.status === 401 && window.location.pathname !== '/auth/sign-in') {
       window.location.replace("/auth/sign-in?expired=true");
       throw new Error("Unauthorized");
     }

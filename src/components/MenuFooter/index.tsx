@@ -18,16 +18,16 @@ export const MenuFooter = () => {
     useMenuFooter();
 
   return (
-    <div className="flex w-full border-t border-slate-800 items-center md:justify-center justify-between gap-4 md:mt-auto px-8 py-4 md:pt-6 md:pb-0">
+    <div className="mt-auto flex w-full items-center justify-between gap-4 border-t border-slate-800 px-8 py-4 md:justify-center md:pt-6 md:pb-0">
       {isLoadingSession || !session ? (
         <MenuFooterSkeleton />
       ) : (
         <>
-          <div className="flex flex-col ">
-            <p className="text-start text-gray-50 text-sm">
+          <div className="flex flex-col">
+            <p className="text-start text-sm text-gray-50">
               {session?.user.name}
             </p>
-            <p className="text-gray-400 hidden lg:flex text-xs">
+            <p className="hidden text-xs text-gray-400 lg:flex">
               {session?.user.email}
             </p>
           </div>

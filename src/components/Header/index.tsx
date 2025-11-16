@@ -1,6 +1,5 @@
 import { Button } from "../ui/button";
 import { Particles } from "../ui/shadcn-io/particles";
-import { useMenuStore } from "../Menu";
 import { MenuIcon } from "lucide-react";
 import { Image } from "../Image";
 import { SkeletonHeader } from "@/pages/DashboardPage/Skeleton";
@@ -9,19 +8,15 @@ import LogoText from "/backloggist-logo-text-256.webp";
 import { useHeader } from "./hook/useMenuHeader";
 
 export const Header = () => {
-  const { toggleOpenMenu } = useMenuStore();
-  const handleOpenMenu = () => {
-    toggleOpenMenu();
-  };
-  const { isLoadingSession, session } = useHeader();
+  const { isLoadingSession, session, handleOpenMenu } = useHeader();
 
   return (
-    <header className="relative md:hidden flex md:flex-col md:flex-1 w-full h-[92px] md:h-screen bg-gray-900 rounded-r-sm md:col-span-1 p-4 justify-between items-center">
+    <header className="relative flex h-[92px] w-full items-center justify-between rounded-r-sm bg-gray-900 p-4 md:col-span-1 md:hidden md:h-screen md:flex-1 md:flex-col">
       <Particles className="absolute inset-0" />
       <Button
         size="icon-lg"
         variant="outline"
-        className="md:hidden bg-gray-900 border-gray-850"
+        className="border-gray-850 bg-gray-900 md:hidden"
         onClick={handleOpenMenu}
       >
         <MenuIcon className="text-slate-50" />
@@ -32,7 +27,7 @@ export const Header = () => {
       {isLoadingSession || !session ? (
         <SkeletonHeader />
       ) : (
-        <Avatar name={session.user.name} className="md:hidden flex" />
+        <Avatar name={session.user.name} className="flex md:hidden" />
       )}
     </header>
   );

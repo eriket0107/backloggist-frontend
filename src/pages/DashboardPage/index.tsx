@@ -10,13 +10,7 @@ export const DashboardPage = () => {
     <Layout className="flex flex-col md:grid md:grid-cols-5 md:pt-5">
       <Header />
       <Menu />
-      <main
-        className="
-        flex flex-1 w-full
-      bg-gray-200 h-full 
-        rounded-t-3xl md:col-span-4 
-        md:pt-4 pt-6 px-4 md:p-12"
-      >
+      <main className="flex h-full w-full flex-1 rounded-t-3xl bg-gray-200 px-4 pt-6 md:col-span-4 md:p-12 md:pt-4">
         <Outlet />
       </main>
     </Layout>

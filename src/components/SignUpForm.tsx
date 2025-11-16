@@ -73,7 +73,7 @@ export const SignUpForm = () => {
     },
   });
 
-  const { mutate, isPending } = useSignUp({
+  const { mutateAsync, isPending } = useSignUp({
     onSuccess: () => {
       toast.success("Usuário criado com sucesso.");
       navigate({ to: "/auth/sign-in" });
@@ -81,14 +81,14 @@ export const SignUpForm = () => {
     onError: (data) => {
       toast.error(
         signInErrors[data.message as SignErrorsType] ||
-          "Erro ao criar usuário, tente novamente."
+          "Erro ao criar usuário, tente novamente.",
       );
     },
   });
 
-  const onSubmit = (data: SignInFormData) => {
+  const onSubmit = async (data: SignInFormData) => {
     const { email, password, name } = data;
-    mutate({ email, password, name });
+    await mutateAsync({ email, password, name });
   };
 
   const hasPasswordError =
@@ -113,7 +113,7 @@ export const SignUpForm = () => {
               className={cn(errors.name?.message && "border-red-500")}
               {...register("name")}
             />
-            <p className="text-sm text-red-500 min-h-[20px]">
+            <p className="min-h-[20px] text-sm text-red-500">
               {errors.name?.message || " "}
             </p>
           </div>
@@ -126,7 +126,7 @@ export const SignUpForm = () => {
               className={cn(errors.email?.message && "border-red-500")}
               {...register("email")}
             />
-            <p className="text-sm text-red-500 min-h-[20px]">
+            <p className="min-h-[20px] text-sm text-red-500">
               {errors.email?.message || " "}
             </p>
           </div>
@@ -145,12 +145,12 @@ export const SignUpForm = () => {
                 variant="ghost"
                 size="icon-sm"
                 onClick={() => setIsToSeePassword(!isToSeePassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                className="absolute top-1/2 right-3 -translate-y-1/2 text-gray-500 hover:text-gray-700"
               >
                 {isToSeePassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </Button>
             </div>
-            <p className="text-sm text-red-500 min-h-[20px]">
+            <p className="min-h-[20px] text-sm text-red-500">
               {errors.password?.message || " "}
             </p>
           </div>
@@ -170,12 +170,12 @@ export const SignUpForm = () => {
                 onClick={() => setIsToSeePassword(!isToSeePassword)}
                 variant="ghost"
                 size="icon-sm"
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                className="absolute top-1/2 right-3 -translate-y-1/2 text-gray-500 hover:text-gray-700"
               >
                 {isToSeePassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </Button>
             </div>
-            <p className="text-sm text-red-500 min-h-[20px]">
+            <p className="min-h-[20px] text-sm text-red-500">
               {hasPasswordError || " "}
             </p>
           </div>
@@ -183,14 +183,14 @@ export const SignUpForm = () => {
           <Button
             type="submit"
             size="lg"
-            className="w-full bg-gray-900 py-4! hover:bg-blue-950 transition-all duration-200 cursor-pointer"
+            className="w-full cursor-pointer bg-gray-900 py-4! transition-all duration-200 hover:bg-blue-950"
             disabled={isPending}
           >
             {isPending ? <Elipses>Criando</Elipses> : "Criar conta"}
           </Button>
         </form>
 
-        <div className="w-full flex items-center justify-center">
+        <div className="flex w-full items-center justify-center">
           <NavigateButton to={"/auth/sign-in"} iconStart={ArrowLeft}>
             Voltar para login
           </NavigateButton>
