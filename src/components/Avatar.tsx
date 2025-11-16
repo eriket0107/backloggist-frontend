@@ -17,7 +17,7 @@ export const Avatar = ({ session, className }: AvatarProps) => {
         className
       )}
     >
-      <p className="text-gray-50 text-sm">
+      <p className="text-gray-50 text-xs">
         {firstLetter}
         {secondLetter}
       </p>

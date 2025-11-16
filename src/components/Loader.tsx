@@ -2,7 +2,7 @@ import LogoMini from "/backloggist-logo-bg-text-192.webp";
 
 export const Loader = () => {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-200">
       <div className="relative flex items-center justify-center">
         <img
           src={LogoMini}

@@ -15,6 +15,12 @@ export const errorHandler = (error: unknown): never => {
     }
 
     const { response } = error;
+
+    if (response.status === 401) {
+      window.location.replace("/auth/sign-in?expired=true");
+      throw new Error("Unauthorized");
+    }
+
     const data = response.data as ApiErrorResponse | undefined;
 
     let message: string;

@@ -9,6 +9,7 @@ import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import type { QueryClient } from "@tanstack/react-query";
 import { authService } from "@/services/auth";
 import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
+import { Loader } from "@/components/Loader";
 
 interface MyRouterContext {
   queryClient: QueryClient;
@@ -21,6 +22,8 @@ const isPublicRoute = (pathname: string): boolean => {
 };
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
+  pendingComponent: Loader,
+  pendingMs: 0,
   beforeLoad: async ({ location }) => {
     if (isPublicRoute(location.pathname)) return;
 

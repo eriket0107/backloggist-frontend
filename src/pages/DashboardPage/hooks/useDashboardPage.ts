@@ -1,10 +1,11 @@
 import { toast } from "@/components/ui/toast";
 import { useSession } from "@/hooks/useSession";
 import { useSignOut } from "@/hooks/useSignOut";
-import { useNavigate } from "@tanstack/react-router";
+import { useLocation, useNavigate } from "@tanstack/react-router";
 
 export const useDashboardPage = () => {
   const navigate = useNavigate();
+  const location = useLocation()
   const { mutate } = useSignOut({
     onSuccess: () => {
       toast.success("Até logo! Sua sessão foi encerrada.");
@@ -24,6 +25,7 @@ export const useDashboardPage = () => {
   return {
     session,
     isLoading,
-    handleLogout
+    handleLogout,
+    location,
   }
 };
