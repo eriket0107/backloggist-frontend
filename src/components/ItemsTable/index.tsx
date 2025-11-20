@@ -76,7 +76,7 @@ export const ItemsTable = memo(({
   return (
     <div className="w-full space-y-4 ">
       {/* Pagination */}
-      <div className="items-center justify-between gap-2 md:hidden flex sticky top-0">
+      <div className="items-center justify-between gap-2 md:hidden flex mb-0!">
         <Button
           variant="link"
           onClick={onPreviousPage}

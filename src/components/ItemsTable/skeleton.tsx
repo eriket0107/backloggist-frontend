@@ -13,12 +13,13 @@ import { useId } from "react";
 export const ItemsTableSkeleton = () => {
   const bodyKeyId = useId();
   const cardKeyId = useId();
+  const generateKey = (prefix: string, index: number) => `${prefix}-${bodyKeyId}-${cardKeyId}-${index}`;
   return (
     <div className="w-full space-y-4">
       {/* Mobile View */}
       <div className="block md:hidden space-y-3">
         {Array.from({ length: 5 }).map((_, index) => (
-          <Card key={`${cardKeyId}${index}`} className="p-4">
+          <Card key={generateKey(cardKeyId, index)} className="p-4">
             <div className="flex gap-3">
               <div className="shrink-0">
                 <Skeleton className="h-14 w-24 rounded-md" />
@@ -47,7 +48,7 @@ export const ItemsTableSkeleton = () => {
             </TableHeader>
             <TableBody>
               {Array.from({ length: 5 }).map((_, index) => (
-                <TableRow key={`${bodyKeyId}${index}`} className="border-b">
+                <TableRow key={generateKey(bodyKeyId, index)} className="border-b">
                   <TableCell className="py-4">
                     <Skeleton className="h-14 w-24 rounded-md" />
                   </TableCell>

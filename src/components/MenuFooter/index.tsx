@@ -22,16 +22,14 @@ export const MenuFooter = () => {
       {isLoadingSession || !session ? (
         <MenuFooterSkeleton />
       ) : (
-        <>
-          <div className="flex flex-col">
-            <p className="text-start text-sm text-gray-50">
-              {session?.user.name}
-            </p>
-            <p className="hidden text-xs text-gray-400 lg:flex">
-              {session?.user.email}
-            </p>
-          </div>
-        </>
+        <div className="flex flex-col">
+          <p className="text-start text-sm text-gray-50">
+            {session?.user.name}
+          </p>
+          <p className="hidden text-xs text-gray-400 lg:flex">
+            {session?.user.email}
+          </p>
+        </div>
       )}
       <Tooltip>
         <TooltipTrigger>

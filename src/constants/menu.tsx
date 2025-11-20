@@ -1,6 +1,9 @@
 import type { NavigateOptions } from "@tanstack/react-router";
 import type { LucideIcon } from "lucide-react";
-import { HomeIcon, ListIcon, SettingsIcon } from "lucide-react";
+import {
+  HomeIcon, ListIcon,
+  // SettingsIcon
+} from "lucide-react";
 
 export interface MenuItem {
   to: NavigateOptions["to"];

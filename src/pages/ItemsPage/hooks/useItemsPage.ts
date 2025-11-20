@@ -6,7 +6,7 @@ import { useState } from "react";
 
 export const useItemsPage = () => {
 
-  const INPUT_WIDTH = breakpoints.medium < window.innerWidth ? 200 : 100
+  const INPUT_WIDTH = breakpoints.medium < window.innerWidth ? 200 : 150
 
   const [page, setPage] = useQueryState('page', parseAsInteger.withDefault(1));
   const [searchTerm, setSearchTerm] = useQueryState('search', { defaultValue: '' });

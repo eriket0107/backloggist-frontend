@@ -1,5 +1,5 @@
 
-import { type NavigateOptions, type ParsedLocation } from "@tanstack/react-router";
+import type { NavigateOptions, ParsedLocation } from "@tanstack/react-router";
 
 export const isRouteSelected = ({
   location,
