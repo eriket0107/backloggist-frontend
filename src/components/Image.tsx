@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 interface LazyImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
-  src: string;
+  src?: string;
   placeholder?: string;
   alt: string;
 }

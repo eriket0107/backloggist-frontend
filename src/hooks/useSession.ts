@@ -20,12 +20,16 @@ export const useSession = (
 			} catch (error) {
 				if (isAxiosError(error) && error.response?.status === 401) {
 					queryClient.clear();
+
 					throw new Error("Unauthorized");
 				}
 				throw error;
 			}
 		},
 		staleTime: 1000 * 30 * 1,
+		refetchInterval: 1000 * 60 * 5,
+		refetchOnMount: true,
+		refetchOnReconnect: true,
 		...options,
 	});
 };

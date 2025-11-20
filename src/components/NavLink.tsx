@@ -1,9 +1,9 @@
 import { cn } from "@/utils";
-import { Link } from "@tanstack/react-router";
+import { Link, type NavigateOptions } from "@tanstack/react-router";
 import { memo, type ElementType, type ReactNode } from "react";
 
 interface NavLinkProps {
-  to: string;
+  to: NavigateOptions["to"];
   isSelected: boolean;
   children?: ReactNode;
   icon: ElementType;

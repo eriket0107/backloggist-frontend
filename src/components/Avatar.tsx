@@ -16,7 +16,7 @@ export const Avatar = memo(({ name, className, src }: AvatarProps) => {
   return (
     <span
       className={cn(
-        "bg-gray-900 border-2 p-1 rounded-full w-[40px] h-[40px] flex items-center justify-center",
+        "bg-gray-900 border-2 p-1 rounded-full w-10 h-10 flex items-center justify-center",
         className
       )}
     >

@@ -18,7 +18,7 @@ export const MenuFooter = () => {
     useMenuFooter();
 
   return (
-    <div className="mt-auto flex w-full items-center justify-between gap-4 border-t border-slate-800 px-8 py-4 md:justify-center md:pt-6 md:pb-0">
+    <div className="mt-auto flex w-full items-center justify-between gap-4 border-t border-slate-800 px-8  py-4 md:justify-center md:pt-6 md:pb-0">
       {isLoadingSession || !session ? (
         <MenuFooterSkeleton />
       ) : (
@@ -39,7 +39,7 @@ export const MenuFooter = () => {
             onClick={handleSignOut}
             disabled={isLoadingSignOut}
             variant="secondary"
-            size="icon-lg"
+            size="icon-sm"
           >
             {isLoadingSignOut ? <Elipses /> : <LogOutIcon />}
           </Button>

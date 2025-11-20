@@ -1,9 +1,13 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
 import { DashboardPage } from "@/pages/DashboardPage";
-import { Loader } from "@/components/Loader";
 
 export const Route = createFileRoute("/")({
-  pendingComponent: Loader,
+  pendingMs: 0,
+  beforeLoad: async () => {
+    throw redirect({
+      to: "/dashboard" as "/",
+    });
+  },
   component: DashboardPage,
 });

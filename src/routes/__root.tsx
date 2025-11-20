@@ -2,14 +2,16 @@ import { TanStackDevtools } from "@tanstack/react-devtools";
 import {
   createRootRouteWithContext,
   Outlet,
-  redirect,
+  useLocation,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 
 import type { QueryClient } from "@tanstack/react-query";
-import { authService } from "@/services/auth";
+
 import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
 import { Loader } from "@/components/Loader";
+import { useSession } from "@/hooks/useSession";
+import { NuqsAdapter } from 'nuqs/adapters/tanstack-router'
 
 interface MyRouterContext {
   queryClient: QueryClient;
@@ -24,35 +26,28 @@ const isPublicRoute = (pathname: string): boolean => {
 export const Route = createRootRouteWithContext<MyRouterContext>()({
   pendingComponent: Loader,
   pendingMs: 0,
-  beforeLoad: async ({ location }) => {
-    if (isPublicRoute(location.pathname)) return;
-
-    try {
-      await authService.session();
-    } catch {
-      throw redirect({
-        to: "/auth/sign-in",
-        search: {
-          expired: true,
-        },
-      });
-    }
+  component: () => {
+    const { pathname } = useLocation();
+    useSession({
+      queryKey: ["session"],
+      enabled: !isPublicRoute(pathname),
+    });
+    return (
+      <NuqsAdapter>
+        <Outlet />
+        <TanStackDevtools
+          config={{
+            position: "bottom-right",
+          }}
+          plugins={[
+            {
+              name: "Tanstack Router",
+              render: <TanStackRouterDevtoolsPanel />,
+            },
+            TanStackQueryDevtools,
+          ]}
+        />
+      </NuqsAdapter>
+    );
   },
-  component: () => (
-    <>
-      <Outlet />
-      <TanStackDevtools
-        config={{
-          position: "bottom-right",
-        }}
-        plugins={[
-          {
-            name: "Tanstack Router",
-            render: <TanStackRouterDevtoolsPanel />,
-          },
-          TanStackQueryDevtools,
-        ]}
-      />
-    </>
-  ),
 });

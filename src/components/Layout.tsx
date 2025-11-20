@@ -10,12 +10,8 @@ interface LayoutProps {
 export const Layout = ({ children, className, props }: LayoutProps) => (
   <div
     className={cn(
-      `min-h-dvh 
-      flex flex-col 
-      items-center 
-      justify-center
-    bg-gray-900`,
-      className
+      `flex min-h-dvh flex-col items-center justify-center bg-gray-900`,
+      className,
     )}
     {...props}
   >

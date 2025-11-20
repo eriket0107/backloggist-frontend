@@ -13,8 +13,8 @@ export interface User {
 export interface Item {
 	id: string;
 	title: string;
-	type: "game" | "book" | "serie" | "movie" | "course";
-	note?: string;
+	type: "game" | "book" | "serie" | "movie" | "course" | "locations";
+	description?: string;
 	imgUrl?: string;
 	createdAt?: Date;
 	updatedAt: Date;
