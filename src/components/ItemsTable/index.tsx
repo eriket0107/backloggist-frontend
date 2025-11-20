@@ -23,7 +23,7 @@ interface ItemsTableProps {
   isLoading?: boolean;
   onNextPage?: () => void;
   onPreviousPage?: () => void;
-  onClickItem?: (item: Item) => void;
+  onRowClick?: (id: string) => void;
   isFirstPage?: boolean;
   isLastPage?: boolean;
   isFetching?: boolean;
@@ -64,7 +64,7 @@ export const ItemsTable = memo(({
   isLoading,
   onNextPage,
   onPreviousPage,
-  onClickItem,
+  onRowClick,
   isFirstPage,
   isLastPage,
   isFetching,
@@ -100,7 +100,7 @@ export const ItemsTable = memo(({
       {/* Mobile View */}
       <div className="block md:hidden space-y-3">
         {items.map((item) => (
-          <Card key={item.id} className="p-4 cursor-pointer hover:bg-gray-50" onClick={() => onClickItem?.(item)}>
+          <Card key={item.id} className="p-4 cursor-pointer hover:bg-gray-50" onClick={() => onRowClick?.(item?.id)}>
             <div className="flex gap-3">
               <div className="shrink-0 my-auto">
                 {item.imgUrl ?
@@ -149,10 +149,10 @@ export const ItemsTable = memo(({
               {items.map((item, index) => (
                 <TableRow
                   key={item.id}
-                  className={cn('cursor-pointer hover:bg-gray-100', index !== items.length - 1 ? 'border-b' : '')}
-                  onClick={() => onClickItem?.(item)}
+                  className={cn('cursor-pointer group hover:bg-gray-100', index !== items.length - 1 ? 'border-b' : '')}
+                  onClick={() => onRowClick?.(item.id)}
                 >
-                  <TableCell className="py-4">
+                  <TableCell className="py-4 overflow-hidden group-hover:scale-105 transition-all duration-200">
                     {item.imgUrl ?
                       <Image
                         src={getImageUrl(item.imgUrl)}

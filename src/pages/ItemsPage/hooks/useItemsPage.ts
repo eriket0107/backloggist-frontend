@@ -2,7 +2,7 @@ import { breakpoints } from "@/constants/break-points";
 import { useItemList } from "@/hooks/useItemList";
 import { debounce } from "@/utils/debounce";
 import { parseAsInteger, useQueryState } from "nuqs";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 export const useItemsPage = () => {
 
@@ -10,6 +10,7 @@ export const useItemsPage = () => {
 
   const [page, setPage] = useQueryState('page', parseAsInteger.withDefault(1));
   const [searchTerm, setSearchTerm] = useQueryState('search', { defaultValue: '' });
+  const [itemId, setItemId] = useQueryState('itemId', { defaultValue: '' });
 
   const [isHovered, setIsHovered] = useState<boolean>(false)
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState<string>(searchTerm);
@@ -48,15 +49,25 @@ export const useItemsPage = () => {
     setIsHovered(false)
   }
 
-  const handleNextPage = () => {
+  const handleNextPage = useCallback(() => {
     if (value?.isLastPage || isPending) return;
     setPage((prev) => prev + 1);
-  }
+  }, [value?.isLastPage, isPending, setPage]);
 
-  const handlePreviousPage = (() => {
+  const handlePreviousPage = useCallback(() => {
     if (value?.isFirstPage || isPending) return;
     setPage((prev) => prev - 1);
-  })
+  }, [value?.isFirstPage, isPending, setPage]);
+
+  const handleRowClick = useCallback((id: string) => {
+    setItemId(id);
+  }, [setItemId]);
+
+  const handleClearFilter = useCallback(() => {
+    setItemId('');
+    setSearchTerm('');
+    setDebouncedSearchTerm('');
+  }, [setItemId, setSearchTerm,]);
 
   return {
     INPUT_WIDTH,
@@ -72,5 +83,7 @@ export const useItemsPage = () => {
     onClearSearch,
     handleNextPage,
     handlePreviousPage,
+    handleRowClick,
+    handleClearFilter
   }
 }

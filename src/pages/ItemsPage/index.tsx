@@ -4,6 +4,7 @@ import { Plus, Search, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/utils";
 import { useItemsPage } from './hooks/useItemsPage';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 
 
@@ -21,7 +22,10 @@ export const ItemsPage = () => {
     handleOnSearchChange,
     onClearSearch,
     handleNextPage,
-    handlePreviousPage
+    handlePreviousPage,
+    handleRowClick,
+    handleClearFilter,
+
   } = useItemsPage()
 
   return (
@@ -60,12 +64,21 @@ export const ItemsPage = () => {
               }
 
             </AnimatePresence>
-
-            <Button variant='ghost' size="lg" className={cn('text-gray-50 bg-theme rounded-l-none! transition-all', isHovered && 'md:block hidden')} onClick={onClearSearch}>
-              <Plus size={16} />
-            </Button>
           </motion.div>
+          <Tooltip>
+            <TooltipContent>
+              Adicionar novo item
+            </TooltipContent>
+            <TooltipTrigger>
+              <Button variant='ghost' size="lg" className={cn('text-gray-50 bg-theme rounded-l-none! transition-all hover:bg-theme/90!', isHovered && 'md:block hidden')} >
+                <Plus size={16} />
+              </Button>
+            </TooltipTrigger>
+          </Tooltip>
 
+          <Button onClick={handleClearFilter} variant='link' size="lg" className='transition-all hover:bg-gray-200/50 text-gray-600 rounded-l-none! md:flex hidden'>
+            Limpar filtros
+          </Button>
         </div>
 
       </div>
@@ -77,7 +90,8 @@ export const ItemsPage = () => {
         onPreviousPage={handlePreviousPage}
         isFirstPage={value?.isFirstPage}
         isLastPage={value?.isLastPage}
+        onRowClick={handleRowClick}
       />
-    </div>
+    </div >
   );
 };

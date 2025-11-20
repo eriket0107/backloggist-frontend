@@ -17,7 +17,7 @@ export const ItemsTableSkeleton = () => {
   return (
     <div className="w-full space-y-4">
       {/* Mobile View */}
-      <div className="block md:hidden space-y-3">
+      <div className="block md:hidden space-y-3 ">
         {Array.from({ length: 5 }).map((_, index) => (
           <Card key={generateKey(cardKeyId, index)} className="p-4">
             <div className="flex gap-3">
@@ -36,7 +36,7 @@ export const ItemsTableSkeleton = () => {
 
       {/* Desktop View */}
       <div className="hidden md:block">
-        <Card className="px-6">
+        <Card className="p-x-6! p-4">
           <Table>
             <TableHeader>
               <TableRow className="hover:bg-transparent border-b">
@@ -58,8 +58,8 @@ export const ItemsTableSkeleton = () => {
                   <TableCell className="py-4">
                     <Skeleton className="h-5 w-16" />
                   </TableCell>
-                  <TableCell className="hidden lg:table-cell py-4">
-                    <Skeleton className="h-4 w-full max-w-md" />
+                  <TableCell className="hidden lg:table-cell py-4 text-sm text-gray-600  w-full max-w-sm">
+                    <Skeleton className="h-4 w-full max-w-sm" />
                   </TableCell>
                 </TableRow>
               ))}
