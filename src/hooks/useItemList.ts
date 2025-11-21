@@ -14,14 +14,14 @@ export const useItemList = ({ filters = {}, options }: {
   const session = useSession()
 
   return useQuery({
-    queryKey: ['items-list', filters?.isPublic, filters?.limit, filters?.page, filters?.searchTerm],
+    queryKey: ['items-list', filters?.limit, filters?.page, filters?.searchTerm],
     queryFn: async () => {
       return await itemService.list({ filters })
     },
     placeholderData: keepPreviousData,
     enabled: !!session.data,
     refetchOnMount: true,
-    staleTime: 1000 * 60 * 10, // 10 minutes
+    staleTime: 1000 * 60 * 5, // 5 minutes
     ...options
   })
 }

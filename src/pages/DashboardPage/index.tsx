@@ -12,7 +12,6 @@ export const DashboardPage = () => {
       <Menu />
       <main className="flex h-full w-full flex-1 rounded-t-3xl bg-gray-200 px-4 pt-6 md:col-span-4 md:p-12 md:pt-4">
         <div className="w-full max-h-[700px] overflow-y-scroll">
-
           <Outlet />
         </div>
       </main>

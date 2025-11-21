@@ -1,21 +1,51 @@
-import LogoMini from "/backloggist-logo-bg-text-192.webp";
+import { useEffect, useState } from "react";
+import { Image } from "./Image";
+import { Progress } from "./ui/progress";
+import { Particles } from "./ui/shadcn-io/particles";
+import LogoMini from "/backloggist-logo-text-256.webp";
+
+const MIN_DELAY = 50;
+const MAX_DELAY = 150;
+const MAX_PROGRESS_SIMULATION = 95;
 
 export const Loader = () => {
+  const [progress, setProgress] = useState(13)
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    const simulateProgress = () => {
+      if (progress >= MAX_PROGRESS_SIMULATION) return;
+
+
+      const increment = Math.random() * (20 / (progress + 10)) + 1;
+      const delay = Math.random() * (MAX_DELAY - MIN_DELAY) + MIN_DELAY;
+
+      const newProgress = Math.min(progress + increment, MAX_PROGRESS_SIMULATION);
+
+      timer = setTimeout(() => {
+        setProgress(newProgress);
+      }, delay);
+    };
+    simulateProgress();
+    return () => {
+      setProgress(100);
+      clearTimeout(timer)
+    }
+      ;
+  }, [progress]);
+
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-200">
+    <div className="relative flex flex-col items-center justify-center h-dvh bg-theme">
+      <Particles className="absolute inset-0" quantity={1000} staticity={100} />
       <div className="relative flex items-center justify-center">
-        <img
+        <Image
           src={LogoMini}
           alt="Logo Carregando"
           className="relative z-10 animate-pulse"
-          height={75}
-          width={75}
         />
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="absolute w-[75px] h-[75px] rounded-full border-2 border-blue-500/30 animate-[ping_1.5s_ease-in-out_infinite]" />
-          <div className="absolute w-[75px] h-[75px] rounded-full border-2 border-blue-500/20 animate-[ping_1.5s_ease-in-out_1.5s_infinite]" />
-        </div>
       </div>
+      <Progress className="relative z-100 w-[10%] animate-pulse" value={progress} />
     </div>
   );
 };

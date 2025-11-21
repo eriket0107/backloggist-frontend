@@ -82,7 +82,7 @@ export const Menu = () => {
             scale: 0.98,
             transition: { duration: 0.1 }
           }}
-          href="/"
+          href="/dashboard"
           className="hidden flex-col items-center p-4 md:flex">
           <Image
             className="mx-auto h-8 w-48 md:h-16 md:w-[256px]"

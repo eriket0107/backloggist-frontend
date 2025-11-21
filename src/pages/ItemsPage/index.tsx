@@ -1,12 +1,14 @@
 import { ItemsTable } from '@/components/ItemsTable';
 import { AnimatePresence, motion } from "motion/react";
-import { Plus, Search, X } from "lucide-react";
+import { EraserIcon, Plus, Search, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/utils";
 import { useItemsPage } from './hooks/useItemsPage';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { lazy } from 'react';
 
-
+const AddItemDialog = lazy(() => import('@/components/AddItemDialog').then(module => ({ default: module.AddItemDialog })));
+const EditItemDialog = lazy(() => import('@/components/EditItemDialog').then(module => ({ default: module.EditItemDialog })));
 
 export const ItemsPage = () => {
   const {
@@ -25,7 +27,7 @@ export const ItemsPage = () => {
     handlePreviousPage,
     handleRowClick,
     handleClearFilter,
-
+    handleCreateItem,
   } = useItemsPage()
 
   return (
@@ -56,35 +58,41 @@ export const ItemsPage = () => {
                       className=" rounded-md outline-none selection:bg-gray-500/20"
                       placeholder="Buscar itens..."
                     />
-                    {isHovered && <Button variant='ghost' onClick={onClearSearch}>
+                    <Button variant='ghost' onClick={onClearSearch}>
                       <X size={16} />
-                    </Button>}
+                    </Button>
                   </>
                 )
               }
-
             </AnimatePresence>
           </motion.div>
+
+          <Tooltip>
+            <TooltipContent>
+              Limpar filtros
+            </TooltipContent>
+            <TooltipTrigger>
+              <Button onClick={handleClearFilter} variant='ghost' size="lg" className='transition-all hover:bg-gray-200/50 text-gray-600 rounded-l-none! md:flex hidden'>
+                <EraserIcon />
+              </Button>
+            </TooltipTrigger>
+          </Tooltip>
           <Tooltip>
             <TooltipContent>
               Adicionar novo item
             </TooltipContent>
             <TooltipTrigger>
-              <Button variant='ghost' size="lg" className={cn('text-gray-50 bg-theme rounded-l-none! transition-all hover:bg-theme/90!', isHovered && 'md:block hidden')} >
+              <Button variant='ghost' size="lg" onClick={handleCreateItem} className={cn('text-gray-50 bg-theme rounded-l-none! transition-all hover:bg-theme/90!')} >
                 <Plus size={16} />
               </Button>
             </TooltipTrigger>
           </Tooltip>
-
-          <Button onClick={handleClearFilter} variant='link' size="lg" className='transition-all hover:bg-gray-200/50 text-gray-600 rounded-l-none! md:flex hidden'>
-            Limpar filtros
-          </Button>
         </div>
 
       </div>
       <ItemsTable
         items={value?.data || []}
-        isLoading={isPending}
+        isPending={isPending}
         isFetching={isFetching}
         onNextPage={handleNextPage}
         onPreviousPage={handlePreviousPage}
@@ -92,6 +100,8 @@ export const ItemsPage = () => {
         isLastPage={value?.isLastPage}
         onRowClick={handleRowClick}
       />
+      <AddItemDialog />
+      <EditItemDialog />
     </div >
   );
 };

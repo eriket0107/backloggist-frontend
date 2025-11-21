@@ -17,10 +17,11 @@ import { cropString } from "@/utils/string-crop";
 import { ItemsTableSkeleton } from "./skeleton";
 import { memo } from "react";
 import { Button } from "../ui/button";
+import { usePreftechItem } from "@/hooks/usePreftechItem";
 
 interface ItemsTableProps {
   items: Item[];
-  isLoading?: boolean;
+  isPending?: boolean;
   onNextPage?: () => void;
   onPreviousPage?: () => void;
   onRowClick?: (id: string) => void;
@@ -61,16 +62,24 @@ w-[100px] flex p-2
 
 export const ItemsTable = memo(({
   items,
-  isLoading,
   onNextPage,
   onPreviousPage,
   onRowClick,
   isFirstPage,
   isLastPage,
   isFetching,
+  isPending
 }: ItemsTableProps) => {
-  if (isLoading || isFetching) {
+  const isLoading = isFetching || isPending;
+  const { prefetchItem } = usePreftechItem()
+
+  if (isLoading && !items.length) {
     return <ItemsTableSkeleton />;
+  }
+
+
+  const handleRowMouseEnter = async (itemId: string) => {
+    await prefetchItem(itemId);
   }
 
   return (
@@ -139,8 +148,8 @@ export const ItemsTable = memo(({
           <Table >
             <TableHeader>
               <TableRow className="hover:bg-transparent border-b">
-                <TableHead className="w-[120px]">Imagem</TableHead>
-                <TableHead>Nome</TableHead>
+                <TableHead className="min-w-[120px]">Imagem</TableHead>
+                <TableHead className="min-w-70">Nome</TableHead>
                 <TableHead className="w-[100px]">Tipo</TableHead>
                 <TableHead className="hidden lg:table-cell">Descrição</TableHead>
               </TableRow>
@@ -150,20 +159,20 @@ export const ItemsTable = memo(({
                 <TableRow
                   key={item.id}
                   className={cn('cursor-pointer group hover:bg-gray-100', index !== items.length - 1 ? 'border-b' : '')}
+                  onMouseEnter={() => handleRowMouseEnter(item.id)}
                   onClick={() => onRowClick?.(item.id)}
                 >
                   <TableCell className="py-4 overflow-hidden group-hover:scale-105 transition-all duration-200">
-                    {item.imgUrl ?
+                    {
                       <Image
                         src={getImageUrl(item.imgUrl)}
                         alt={item.title}
                         width={100}
                         height={56}
                         className="rounded-md object-cover aspect-video"
-                      /> :
-                      <span className="flex h-14 w-[100px] items-center justify-center rounded-md bg-gray-200 text-gray-500">
-                        <ImageIcon className="h-6 w-6" />
-                      </span>
+                        hasPlaceholder
+                      />
+
                     }
                   </TableCell>
                   <TableCell className="font-semibold py-4">{item.title}</TableCell>
@@ -187,7 +196,7 @@ export const ItemsTable = memo(({
         <Button
           variant="link"
           onClick={onPreviousPage}
-          disabled={isFirstPage || isFetching}
+          disabled={isLoading}
           className={paginationButtonStyles}
         >
           <ChevronLeft className="h-4 w-4" />
@@ -196,7 +205,7 @@ export const ItemsTable = memo(({
         <Button
           variant="link"
           onClick={onNextPage}
-          disabled={isLastPage || isFetching}
+          disabled={isLoading}
           className={paginationButtonStyles}
         >
           Próxima

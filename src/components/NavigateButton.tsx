@@ -32,6 +32,7 @@ export const NavigateButton = ({
           `,
         className
       )}
+      preload="intent"
     >
       {IconStart && <IconStart height={16} className="animate-bounce-x" />}
       {children}

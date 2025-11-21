@@ -1,5 +1,6 @@
 import { breakpoints } from "@/constants/break-points";
 import { useItemList } from "@/hooks/useItemList";
+import { usePrefetchNextPage } from "@/hooks/usePrefetchNextPage";
 import { debounce } from "@/utils/debounce";
 import { parseAsInteger, useQueryState } from "nuqs";
 import { useCallback, useState } from "react";
@@ -9,8 +10,9 @@ export const useItemsPage = () => {
   const INPUT_WIDTH = breakpoints.medium < window.innerWidth ? 200 : 150
 
   const [page, setPage] = useQueryState('page', parseAsInteger.withDefault(1));
+
   const [searchTerm, setSearchTerm] = useQueryState('search', { defaultValue: '' });
-  const [itemId, setItemId] = useQueryState('itemId', { defaultValue: '' });
+  const [, setItemId] = useQueryState('itemId', { defaultValue: '' });
 
   const [isHovered, setIsHovered] = useState<boolean>(false)
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState<string>(searchTerm);
@@ -27,13 +29,17 @@ export const useItemsPage = () => {
     setIsHovered(prev => !prev);
   }
 
-  const { data: value, isPending, isFetching } = useItemList({
+  const { data: value, isPending, isFetching, isSuccess } = useItemList({
     filters: {
       limit: 5,
-      searchTerm: searchTerm || undefined,
+      searchTerm,
       page
     },
   });
+
+
+  usePrefetchNextPage({ page, searchTerm, enabled: isSuccess && !value?.isLastPage });
+
 
   const handleOnSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDebouncedSearchTerm(e.target.value);
@@ -50,14 +56,14 @@ export const useItemsPage = () => {
   }
 
   const handleNextPage = useCallback(() => {
-    if (value?.isLastPage || isPending) return;
+    if (value?.isLastPage || isFetching) return;
     setPage((prev) => prev + 1);
-  }, [value?.isLastPage, isPending, setPage]);
+  }, [value?.isLastPage, isFetching, setPage]);
 
   const handlePreviousPage = useCallback(() => {
-    if (value?.isFirstPage || isPending) return;
+    if (value?.isFirstPage || isFetching) return;
     setPage((prev) => prev - 1);
-  }, [value?.isFirstPage, isPending, setPage]);
+  }, [value?.isFirstPage, isFetching, setPage]);
 
   const handleRowClick = useCallback((id: string) => {
     setItemId(id);
@@ -68,6 +74,12 @@ export const useItemsPage = () => {
     setSearchTerm('');
     setDebouncedSearchTerm('');
   }, [setItemId, setSearchTerm,]);
+
+  const handleCreateItem = useCallback(() => {
+    setItemId('add-item')
+  }, [setItemId]);
+
+
 
   return {
     INPUT_WIDTH,
@@ -84,6 +96,7 @@ export const useItemsPage = () => {
     handleNextPage,
     handlePreviousPage,
     handleRowClick,
-    handleClearFilter
+    handleClearFilter,
+    handleCreateItem
   }
 }
