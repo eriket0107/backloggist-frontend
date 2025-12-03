@@ -7,7 +7,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { Image } from "@/components/Image";
 
 import LogoText from "/backloggist-logo-text-256.webp";
-import { useLocation, } from "@tanstack/react-router";
+import { useLocation, useNavigate, } from "@tanstack/react-router";
 
 import { MenuFooter } from "./MenuFooter";
 import { NavLink } from "./NavLink";
@@ -20,7 +20,11 @@ import { normalizePath } from "@/utils/normalize-path"
 export const Menu = () => {
   const { isMenuOpen } = useMenuStore();
   const location = useLocation()
+  const navigate = useNavigate();
 
+  const handleNavigate = (to: string) => {
+    navigate({ to });
+  }
 
   return (
     <div
@@ -73,7 +77,7 @@ export const Menu = () => {
 
       {/*        Desktop menu         */}
       <aside className="hidden flex-1 flex-col items-center justify-start gap-2 overflow-hidden px-6 py-8 md:flex md:flex-1">
-        <motion.a
+        <motion.button
           whileTap={{
             scale: 1.02,
             transition: { duration: 0.1 }
@@ -82,14 +86,14 @@ export const Menu = () => {
             scale: 0.98,
             transition: { duration: 0.1 }
           }}
-          href="/dashboard"
+          onClick={() => handleNavigate("/dashboard")}
           className="hidden flex-col items-center p-4 md:flex">
           <Image
             className="mx-auto h-8 w-48 md:h-16 md:w-[256px]"
             alt="Backlog Text logo"
             src={LogoText}
           />
-        </motion.a>
+        </motion.button>
         <nav>
           {menu.map(({ Icon, label, to }) => (
             <NavLink

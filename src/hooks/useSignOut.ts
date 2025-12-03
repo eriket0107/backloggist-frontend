@@ -16,7 +16,7 @@ export const useSignOut = (options?: UseMutationOptions<void, Error, void>) => {
 		mutationFn: async () => {
 			try {
 				await authService.signOut();
-				queryClient.invalidateQueries({ queryKey: ["user"] });
+				queryClient.clear();
 			} catch (error) {
 				if (isAxiosError(error)) {
 					console.error(error.message);

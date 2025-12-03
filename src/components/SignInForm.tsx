@@ -19,6 +19,7 @@ import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { NavigateButton } from "./NavigateButton";
 import { Elipses } from "./Elipsis";
+import { decodePassword, encodePassword } from "@/utils/encode-password";
 
 const loginSchema = z.object({
   email: z.string().email("E-mail inválido."),
@@ -55,7 +56,12 @@ export const SignInForm = () => {
     },
   });
 
-  const onSubmit = async (data: LoginFormData) => {
+  const onSubmit = async (formData: LoginFormData) => {
+    const encodedPassword = encodePassword(formData.password);
+    const data = {
+      email: formData.email,
+      password: encodedPassword,
+    };
     await mutateAsync(data);
   };
 
@@ -78,7 +84,7 @@ export const SignInForm = () => {
               className={cn(errors.email?.message && "border-red-500")}
               {...register("email")}
             />
-            <p className="min-h-[20px] text-sm text-red-500">
+            <p className="min-h-5 text-sm text-red-500">
               {errors.email?.message || " "}
             </p>
           </div>
@@ -102,7 +108,7 @@ export const SignInForm = () => {
                 {isToSeePassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </Button>
             </div>
-            <p className="min-h-[20px] text-sm text-red-500">
+            <p className="min-h-5 text-sm text-red-500">
               {errors.password?.message || " "}
             </p>
           </div>

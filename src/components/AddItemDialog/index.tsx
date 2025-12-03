@@ -22,7 +22,7 @@ export const AddItemDialog = () => {
     isOpen,
     form,
     onSubmit,
-    itemId
+    itemId,
   } = useItemDialogForm()
 
   const { register, handleSubmit, formState: { errors, isSubmitting }, setValue, } = form;

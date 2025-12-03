@@ -3,15 +3,18 @@ import { parseAsString, useQueryState } from "nuqs";
 import { z } from "zod";
 import { useItemCreate } from "./useItemCreate";
 import { useItemDelete } from "./useItemDelete";
-import { useItemGet } from "./useItemGet";
-import { useDeferredValue, useEffect, useRef, useState, useCallback } from "react";
+import { useItemGetById } from "./useItemGetById";
+import { useDeferredValue, useRef, useState, useCallback } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "@/components/ui/toast";
+import { useItemUpdate } from "./useItemUpdate";
 
+// Esquema Zod (Mantido)
 const itemSchema = z.object({
   title: z.string().min(1, "Título obrigatório"),
   type: z.enum(["game", "book", "serie", "movie", "course", "locations"]),
   description: z.string().optional(),
-  imgUrl: z.string().url("URL inválida").optional().or(z.literal("")),
+  imgUrl: z.string().optional().or(z.literal("")),
   file: z
     .any()
     .refine((files) => {
@@ -26,38 +29,61 @@ const itemSchema = z.object({
 
 export type ItemFormValues = z.infer<typeof itemSchema>;
 
+const initialDefaultValues: ItemFormValues = {
+  title: "",
+  type: "game",
+  description: "",
+  imgUrl: "",
+  file: undefined,
+};
+
 export const useItemDialogForm = () => {
-
-  const form = useForm<ItemFormValues>({
-    resolver: zodResolver(itemSchema),
-    defaultValues: {
-      title: "",
-      type: "game",
-      description: "",
-      imgUrl: "",
-      file: undefined,
-    },
-  });
-
-  const { watch, setValue, reset, } = form;
-
-  const { mutateAsync: mutateCreateAsync } = useItemCreate();
   const [itemId, setItemId] = useQueryState("itemId", parseAsString);
   const isToAdd = 'add-item' === itemId;
   const isOpen = Boolean(itemId);
 
-  const { mutateAsync: mutateDeleteAsync } = useItemDelete({
-    onSuccess: () => {
-      handleClose();
-    }
-  })
-
-  const { data: item, isLoading, isSuccess, isFetching, isError } = useItemGet(itemId || "", {
+  const { data: item, isSuccess } = useItemGetById(itemId || "", {
     queryKey: ['item', itemId],
     enabled: !!itemId && !isToAdd,
   });
 
-  const isFetchingItem = (isFetching) && !item;
+  const formValues = isToAdd ? initialDefaultValues : item
+  const form = useForm<ItemFormValues>({
+    resolver: zodResolver(itemSchema),
+    values: formValues,
+    defaultValues: formValues,
+  });
+
+  const { watch, setValue, reset, } = form;
+
+
+  const { mutateAsync: mutateCreateAsync } = useItemCreate({
+    onSuccess: () => {
+      toast.success("Item salvo com sucesso!");
+      handleClose();
+    }
+  });
+
+  const { mutateAsync: mutateDeleteAsync } = useItemDelete({
+    onSuccess: () => {
+      handleClose();
+      toast.success("Excluído com sucesso!");
+    },
+    onError: () => {
+      toast.error("Item não encontrado.");
+      handleClose();
+    }
+  })
+
+  const { mutateAsync: mutateUpdateAsync } = useItemUpdate({
+    onSuccess: () => {
+      toast.success("Item atualizado com sucesso!");
+      handleClose();
+    },
+    onError: () => {
+      toast.error("Item não encontrado.");
+    },
+  })
 
   const [dragActive, setDragActive] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -67,13 +93,16 @@ export const useItemDialogForm = () => {
   const handleDelete = async () => {
     if (itemId) {
       await mutateDeleteAsync(itemId);
+    } else {
+      toast.error("Item não encontrado.");
     }
   }
 
-
   const handleFile = (file: File) => {
     const url = URL.createObjectURL(file);
+
     setValue("imgUrl", url, { shouldValidate: true });
+    setValue("file", [file], { shouldValidate: true });
   };
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
@@ -97,49 +126,28 @@ export const useItemDialogForm = () => {
     }
   };
 
-  const onSubmit = (data: ItemFormValues) => {
-    mutateCreateAsync({ ...data, file: data.file?.[0] });
-    setItemId('');
-    reset({}, { keepDirty: false, keepDefaultValues: false })
+  const onSubmit = async (data: ItemFormValues) => {
+    if (item && !isToAdd) {
+      await mutateUpdateAsync({ itemId: item.id, data: { ...data, file: data.file?.[0] } });
+      handleClose();
+      return;
+    }
+
+    await mutateCreateAsync({ ...data, file: data.file?.[0] });
+    handleClose();
   };
 
   const handleClose = useCallback(() => {
     setItemId('');
-    reset({}, { keepDirty: false, keepDefaultValues: false })
+    reset(initialDefaultValues, { keepDirty: false, keepDefaultValues: false })
   }, [setItemId, reset]);
 
 
-  useEffect(() => {
-    if (item && !isToAdd) {
-      reset({
-        title: item.title,
-        type: item.type,
-        description: item.description || "",
-        imgUrl: item.imgUrl || "",
-        file: undefined,
-      }, { keepDirty: false, keepDefaultValues: false });
-    }
-
-    if (isToAdd && isOpen) {
-      reset({
-        title: "",
-        type: "game",
-        description: "",
-        imgUrl: "",
-        file: undefined,
-      }, { keepDirty: false, keepDefaultValues: false });
-    }
-
-    if (isError) {
-      handleClose();
-    }
-  }, [item, reset, isToAdd, isOpen, isError, handleClose]);
-
+  const isFormLoading = !isToAdd && !!itemId && !item && !isSuccess;
 
   return {
     form,
     isOpen,
-    isLoading,
     deferredImgUrl,
     dragActive,
     inputRef,
@@ -149,10 +157,9 @@ export const useItemDialogForm = () => {
     handleInputChange,
     onSubmit,
     handleClose,
-    isSuccess,
     item,
     itemId,
-    isFetchingItem,
+    isFetchingItem: isFormLoading,
     isToAdd,
   }
 }

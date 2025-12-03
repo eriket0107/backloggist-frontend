@@ -1,6 +1,6 @@
 import { breakpoints } from "@/constants/break-points";
 import { useItemList } from "@/hooks/useItemList";
-import { usePrefetchNextPage } from "@/hooks/usePrefetchNextPage";
+import { useNextPagePrefetch } from "@/hooks/useNextPagePrefetch";
 import { debounce } from "@/utils/debounce";
 import { parseAsInteger, useQueryState } from "nuqs";
 import { useCallback, useState } from "react";
@@ -29,7 +29,7 @@ export const useItemsPage = () => {
     setIsHovered(prev => !prev);
   }
 
-  const { data: value, isPending, isFetching, isSuccess } = useItemList({
+  const { data: value, isPending, isFetching } = useItemList({
     filters: {
       limit: 5,
       searchTerm,
@@ -38,7 +38,7 @@ export const useItemsPage = () => {
   });
 
 
-  usePrefetchNextPage({ page, searchTerm, enabled: isSuccess && !value?.isLastPage });
+  useNextPagePrefetch({ page });
 
 
   const handleOnSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {

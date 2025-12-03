@@ -41,7 +41,7 @@ export const ItemsTableSkeleton = () => {
             <TableHeader>
               <TableRow className="hover:bg-transparent border-b">
                 <TableHead className="w-[120px]">Imagem</TableHead>
-                <TableHead>Nome</TableHead>
+                <TableHead className="min-w-70">Nome</TableHead>
                 <TableHead className="w-[100px]">Tipo</TableHead>
                 <TableHead className="hidden lg:table-cell">Descrição</TableHead>
               </TableRow>

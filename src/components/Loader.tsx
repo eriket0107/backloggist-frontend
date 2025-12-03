@@ -3,13 +3,18 @@ import { Image } from "./Image";
 import { Progress } from "./ui/progress";
 import { Particles } from "./ui/shadcn-io/particles";
 import LogoMini from "/backloggist-logo-text-256.webp";
+import { useLocation } from "@tanstack/react-router";
+import { isPublicRoute } from "@/constants/public-routes";
 
 const MIN_DELAY = 50;
 const MAX_DELAY = 150;
 const MAX_PROGRESS_SIMULATION = 95;
 
 export const Loader = () => {
+  const { pathname } = useLocation();
   const [progress, setProgress] = useState(13)
+
+
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -34,6 +39,7 @@ export const Loader = () => {
       ;
   }, [progress]);
 
+  if (isPublicRoute(pathname)) return <></>;
 
   return (
     <div className="relative flex flex-col items-center justify-center h-dvh bg-theme">

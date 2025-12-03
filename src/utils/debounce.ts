@@ -9,7 +9,7 @@ export const debounce = <T extends unknown[]>(
       clearTimeout(timeoutId);
     }
     timeoutId = setTimeout(() => {
-      callback(...args);
+      callback.apply(this, args);
     }, delay);
   };
 };

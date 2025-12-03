@@ -13,6 +13,7 @@ import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
 import { Loader } from "@/components/Loader";
 import { NuqsAdapter } from 'nuqs/adapters/tanstack-router'
 import { authService } from "@/services/auth";
+import { isPublicRoute } from "@/constants/public-routes";
 
 interface MyRouterContext {
   queryClient: QueryClient;
@@ -20,28 +21,24 @@ interface MyRouterContext {
 
 const sessionLoader = async () => {
   try {
-    // Attempt to fetch the session
-    return await authService.session();
+    if (!isPublicRoute(location.pathname)) {
+      return await authService.session();
+    }
   } catch {
-    // If authService.session() throws (e.g., 401), return null
     return null;
   }
-};
-
-const PUBLIC_ROUTES = ["/auth/sign-up", "/auth/sign-in"] as const;
-
-const isPublicRoute = (pathname: string): boolean => {
-  return PUBLIC_ROUTES.some((route) => pathname === route);
 };
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
   pendingMs: 0,
   loader: sessionLoader,
   pendingComponent: Loader,
+  wrapInSuspense: true,
   component: () => {
     const session = useLoaderData({
       strict: false
     })
+
     if (!session && !isPublicRoute(location.pathname)) {
       throw redirect({
         to: "/auth/sign-in",

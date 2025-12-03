@@ -25,11 +25,11 @@ export const useItemCreate = (options?: UseMutationOptions<Partial<Item & { file
     onError: (_, __, onMutateResult: unknown, context) => {
       const mutateResult = onMutateResult as { previousItems?: Partial<Item>[] } | undefined
       context.client.setQueryData<Partial<Item>[]>(['items-list'], mutateResult?.previousItems)
+      options?.onError?.(_, __, onMutateResult, context);
     },
     onSettled: (_, __, ___, ____, context) => {
       context.client.invalidateQueries({ queryKey: ['items-list'] })
-    }
-    ,
+    },
     ...options
   })
 }

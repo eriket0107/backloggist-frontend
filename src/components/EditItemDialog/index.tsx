@@ -30,14 +30,14 @@ export const EditItemDialog = () => {
   } = useItemDialogForm()
   const { register, handleSubmit, formState: { errors, isSubmitting }, setValue } = form;
 
-
   return (
     <Dialog open={isOpen && !isToAdd} onOpenChange={handleClose} key={itemId}>
       <DialogContent className="max-w-2xl">
         <DialogHeader>
           <DialogTitle>Editar Item</DialogTitle>
         </DialogHeader>
-        {isFetchingItem ? <ItemDialogSkeleton /> : <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        {isFetchingItem && <ItemDialogSkeleton />}
+        {!isFetchingItem && <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="title">Título</Label>
             <Input {...register("title")} placeholder="Título do item" />
@@ -93,7 +93,7 @@ export const EditItemDialog = () => {
                 }
               }}
             >
-              {!isFetchingItem && deferredImgUrl ? (
+              {deferredImgUrl ? (
                 <div className="flex flex-col items-center gap-2 h-48 ">
                   <Image
                     src={getImageUrl(deferredImgUrl)}
@@ -123,12 +123,12 @@ export const EditItemDialog = () => {
             <p className="text-red-500 text-xs min-h-3">{errors?.imgUrl?.message || ''}</p>
           </div>
 
-          <DialogFooter>
-            {<Button variant="destructive" className="mr-auto" disabled={isFetchingItem} onClick={handleDelete}>
+          <DialogFooter className="flex flex-row justify-between">
+            <Button variant="destructive" className="sm:mr-auto" disabled={isFetchingItem} onClick={handleDelete}>
               Apagar Item
-            </Button>}
+            </Button>
             <div className="flex gap-2">
-              <Button type="submit" disabled={isSubmitting}>Criar</Button>
+              <Button type="submit" disabled={isSubmitting}>Salvar</Button>
               <DialogClose asChild>
                 <Button type="button" variant="outline">Cancelar</Button>
               </DialogClose>
