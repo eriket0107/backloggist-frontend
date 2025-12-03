@@ -19,7 +19,7 @@ import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { NavigateButton } from "./NavigateButton";
 import { Elipses } from "./Elipsis";
-import { decodePassword, encodePassword } from "@/utils/encode-password";
+import { encodePassword } from "@/utils/encode-password";
 
 const loginSchema = z.object({
   email: z.string().email("E-mail inválido."),

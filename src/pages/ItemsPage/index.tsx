@@ -28,6 +28,7 @@ export const ItemsPage = () => {
     handleRowClick,
     handleClearFilter,
     handleCreateItem,
+    handlePrefetchItem,
   } = useItemsPage()
 
   return (
@@ -99,6 +100,7 @@ export const ItemsPage = () => {
         isFirstPage={value?.isFirstPage}
         isLastPage={value?.isLastPage}
         onRowClick={handleRowClick}
+        onPrefetchItem={handlePrefetchItem}
       />
       <AddItemDialog />
       <EditItemDialog />

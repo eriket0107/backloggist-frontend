@@ -42,20 +42,22 @@ export const useItemDialogForm = () => {
   const isToAdd = 'add-item' === itemId;
   const isOpen = Boolean(itemId);
 
-  const { data: item, isSuccess } = useItemGetById(itemId || "", {
-    queryKey: ['item', itemId],
-    enabled: !!itemId && !isToAdd,
+  const { data: item, isSuccess } = useItemGetById({
+    id: itemId || undefined,
+    options: {
+      enabled: !!itemId && !isToAdd,
+      queryKey: ['item', itemId],
+      refetchOnMount: false,
+    }
   });
 
   const formValues = isToAdd ? initialDefaultValues : item
   const form = useForm<ItemFormValues>({
     resolver: zodResolver(itemSchema),
     values: formValues,
-    defaultValues: formValues,
   });
 
   const { watch, setValue, reset, } = form;
-
 
   const { mutateAsync: mutateCreateAsync } = useItemCreate({
     onSuccess: () => {

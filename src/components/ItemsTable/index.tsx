@@ -27,6 +27,7 @@ interface ItemsTableProps {
   isFirstPage?: boolean;
   isLastPage?: boolean;
   isFetching?: boolean;
+  onPrefetchItem?: (itemId?: string | undefined) => Promise<void>;
 }
 
 const getTypeColor = (type: Item["type"]) => {
@@ -68,6 +69,7 @@ export const ItemsTable = memo(
     isLastPage,
     isFetching,
     isPending,
+    onPrefetchItem,
   }: ItemsTableProps) => {
     const isLoading = isFetching || isPending;
 
@@ -81,7 +83,9 @@ export const ItemsTable = memo(
       onPreviousPage?.();
     }, [isFirstPage, isFetching, onPreviousPage]);
 
-    if (isLoading && !items.length) {
+
+
+    if (isPending) {
       return <ItemsTableSkeleton />;
     }
 
@@ -180,6 +184,7 @@ export const ItemsTable = memo(
                         index !== items.length - 1 ? "border-b" : ""
                       )}
                       onClick={() => onRowClick?.(item.id)}
+                      onMouseOver={() => onPrefetchItem?.(item.id)}
                     >
                       <TableCell className="py-4 overflow-hidden group-hover:scale-105 transition-all duration-200">
                         {

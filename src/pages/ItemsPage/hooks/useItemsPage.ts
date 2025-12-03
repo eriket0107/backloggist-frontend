@@ -1,12 +1,12 @@
 import { breakpoints } from "@/constants/break-points";
 import { useItemList } from "@/hooks/useItemList";
+import { useItemPrefetch } from "@/hooks/useItemPrefetch";
 import { useNextPagePrefetch } from "@/hooks/useNextPagePrefetch";
 import { debounce } from "@/utils/debounce";
 import { parseAsInteger, useQueryState } from "nuqs";
 import { useCallback, useState } from "react";
 
 export const useItemsPage = () => {
-
   const INPUT_WIDTH = breakpoints.medium < window.innerWidth ? 200 : 150
 
   const [page, setPage] = useQueryState('page', parseAsInteger.withDefault(1));
@@ -28,6 +28,9 @@ export const useItemsPage = () => {
   const handleMobileAction = () => {
     setIsHovered(prev => !prev);
   }
+  const { prefetchItem } = useItemPrefetch()
+
+  useNextPagePrefetch({ page });
 
   const { data: value, isPending, isFetching } = useItemList({
     filters: {
@@ -36,9 +39,6 @@ export const useItemsPage = () => {
       page
     },
   });
-
-
-  useNextPagePrefetch({ page });
 
 
   const handleOnSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -79,7 +79,10 @@ export const useItemsPage = () => {
     setItemId('add-item')
   }, [setItemId]);
 
-
+  const handlePrefetchItem = useCallback(async (itemId?: string) => {
+    if (!itemId) return;
+    await prefetchItem(itemId);
+  }, [prefetchItem]);
 
   return {
     INPUT_WIDTH,
@@ -97,6 +100,7 @@ export const useItemsPage = () => {
     handlePreviousPage,
     handleRowClick,
     handleClearFilter,
-    handleCreateItem
+    handleCreateItem,
+    handlePrefetchItem,
   }
 }

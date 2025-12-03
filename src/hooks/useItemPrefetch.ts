@@ -6,9 +6,12 @@ export const useItemPrefetch = () => {
   const queryClient = useQueryClient();
 
   const prefetchItem = async (itemId: string) => {
-    await queryClient.prefetchQuery({
+    return await queryClient.prefetchQuery({
       queryKey: ['item', itemId],
-      queryFn: async () => await itemService.get(itemId),
+      queryFn: async () => {
+        const { data } = await itemService.get(itemId)
+        return data;
+      },
       staleTime: 1000 * 60 * 5,
     });
   };

@@ -39,7 +39,10 @@ export const Loader = () => {
       ;
   }, [progress]);
 
-  if (isPublicRoute(pathname)) return <></>;
+
+  if (isPublicRoute(pathname)) {
+    return null;
+  }
 
   return (
     <div className="relative flex flex-col items-center justify-center h-dvh bg-theme">
