@@ -14,8 +14,6 @@ export const Loader = () => {
   const { pathname } = useLocation();
   const [progress, setProgress] = useState(13)
 
-
-
   useEffect(() => {
     let timer: NodeJS.Timeout;
     const simulateProgress = () => {
@@ -38,7 +36,6 @@ export const Loader = () => {
     }
       ;
   }, [progress]);
-
 
   if (isPublicRoute(pathname)) {
     return null;
