@@ -276,7 +276,7 @@ const SelectCore = <T extends string = string>({
     return () => {
       document.removeEventListener("mousedown", handleClickOutside)
     }
-  }, [isOpen, handleOpenChange])
+  }, [isOpen])
 
   return (
     <SelectContext.Provider
