@@ -23,13 +23,13 @@ export const AddItemDialog = () => {
     form,
     onSubmit,
     itemId,
+    isToAdd
   } = useItemDialogForm()
 
   const { register, handleSubmit, formState: { errors, isSubmitting }, setValue, } = form;
 
-
   return (
-    <Dialog open={isOpen} onOpenChange={handleClose} key={itemId}>
+    <Dialog open={isOpen && !!isToAdd} onOpenChange={handleClose} key={itemId}>
       <DialogContent className="max-w-2xl">
         <DialogHeader>
           <DialogTitle>Novo Item</DialogTitle>
@@ -130,6 +130,6 @@ export const AddItemDialog = () => {
           </DialogFooter>
         </form>
       </DialogContent>
-    </Dialog >
+    </Dialog>
   );
 }

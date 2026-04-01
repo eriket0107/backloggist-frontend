@@ -70,7 +70,7 @@ export const useItemsPage = () => {
   }, [setItemId]);
 
   const handleClearFilter = useCallback(() => {
-    setItemId('');
+    setItemId(null);
     setSearchTerm('');
     setDebouncedSearchTerm('');
   }, [setItemId, setSearchTerm,]);

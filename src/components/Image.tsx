@@ -9,7 +9,6 @@ interface LazyImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
 }
 
 export const Image = ({ src, placeholder, alt, hasPlaceholder = false, ...props }: LazyImageProps) => {
-  const [imgSrc, setImgSrc] = useState<string | undefined>(placeholder);
   const [isLoaded, setIsLoaded] = useState(false);
   const imgRef = useRef<HTMLImageElement>(null);
 
@@ -22,7 +21,7 @@ export const Image = ({ src, placeholder, alt, hasPlaceholder = false, ...props 
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            setImgSrc(src);
+
             observer.disconnect();
           }
         });
@@ -35,7 +34,7 @@ export const Image = ({ src, placeholder, alt, hasPlaceholder = false, ...props 
     return () => {
       observer.disconnect();
     };
-  }, [src]);
+  }, []);
 
   if (!src && hasPlaceholder) {
     return (<span className="flex h-14 w-[100px] items-center justify-center rounded-md bg-gray-200 text-gray-500">
@@ -46,7 +45,7 @@ export const Image = ({ src, placeholder, alt, hasPlaceholder = false, ...props 
   return (
     <img
       ref={imgRef}
-      src={imgSrc}
+      src={src}
       alt={alt}
       {...props}
       onLoad={() => setIsLoaded(true)}

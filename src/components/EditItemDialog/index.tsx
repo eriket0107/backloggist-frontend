@@ -12,6 +12,7 @@ import { ItemDialogSkeleton } from "./skeleton";
 import { useItemDialogForm, type ItemFormValues } from "@/hooks/useItemDialogForm";
 
 
+
 export const EditItemDialog = () => {
   const { form,
     deferredImgUrl,
@@ -26,9 +27,10 @@ export const EditItemDialog = () => {
     itemId,
     isFetchingItem,
     onSubmit,
-    isToAdd
+    isToAdd,
   } = useItemDialogForm()
-  const { register, handleSubmit, formState: { errors, isSubmitting }, setValue } = form;
+  const { register, handleSubmit, formState: { errors, isSubmitting }, setValue, watch } = form;
+
 
   return (
     <Dialog open={isOpen && !isToAdd} onOpenChange={handleClose} key={itemId}>
@@ -46,14 +48,14 @@ export const EditItemDialog = () => {
 
           <div className="space-y-2">
             <Label htmlFor="type">Tipo</Label>
-            <Select
-              {...register("type")}
-              onValueChange={value => setValue("type", value as ItemFormValues["type"])}
+            <Select<ItemFormValues['type']>
+              onValueChange={(value) => setValue('type', value)}
+              value={watch('type')}
             >
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Selecione o tipo" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent >
                 <SelectItem value="game">Jogo</SelectItem>
                 <SelectItem value="book">Livro</SelectItem>
                 <SelectItem value="serie">Série</SelectItem>

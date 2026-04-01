@@ -4,12 +4,12 @@ import { z } from "zod";
 import { useItemCreate } from "./useItemCreate";
 import { useItemDelete } from "./useItemDelete";
 import { useItemGetById } from "./useItemGetById";
-import { useDeferredValue, useRef, useState, useCallback } from "react";
+import { useRef, useState, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "@/components/ui/toast";
 import { useItemUpdate } from "./useItemUpdate";
 
-// Esquema Zod (Mantido)
+
 const itemSchema = z.object({
   title: z.string().min(1, "Título obrigatório"),
   type: z.enum(["game", "book", "serie", "movie", "course", "locations"]),
@@ -23,8 +23,8 @@ const itemSchema = z.object({
     }, "O arquivo deve ter no máximo 5MB")
     .refine((files) => {
       if (files?.length === 0) return true; // optional
-      return ["image/jpeg", "image/png", "image/gif"].includes(files?.[0]?.type);
-    }, "Formato de arquivo inválido. Apenas JPEG, PNG e GIF são permitidos.").optional(),
+      return ["image/jpeg", "image/png", "image/webp"].includes(files?.[0]?.type);
+    }, "Formato de arquivo inválido. Apenas JPEG, PNG e WEBP são permitidos.").optional(),
 });
 
 export type ItemFormValues = z.infer<typeof itemSchema>;
@@ -90,8 +90,6 @@ export const useItemDialogForm = () => {
   const [dragActive, setDragActive] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const imgUrl = watch("imgUrl");
-  const deferredImgUrl = useDeferredValue(imgUrl);
-
   const handleDelete = async () => {
     if (itemId) {
       await mutateDeleteAsync(itemId);
@@ -150,7 +148,7 @@ export const useItemDialogForm = () => {
   return {
     form,
     isOpen,
-    deferredImgUrl,
+    deferredImgUrl: imgUrl,
     dragActive,
     inputRef,
     handleDelete,
